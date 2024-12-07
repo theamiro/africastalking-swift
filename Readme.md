@@ -1,8 +1,9 @@
 # Africa's Talking Swift SDK
-<p  align="left">
-<img  src="https://img.shields.io/badge/platform-iOS-brightgreen" />
-<a  href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE">
-<img  alt="License: MIT"  src="https://img.shields.io/badge/license-MIT-yellow.svg"  target="_blank" />
+<p align="left">
+<img src="https://github.com/theamiro/africastalking-swift/actions/workflows/build.yml/badge.svg" />
+<img src="https://img.shields.io/badge/platform-iOS-brightgreen" />
+<a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE">
+    <img alt="License: MIT"  src="https://img.shields.io/badge/license-MIT-yellow.svg"  target="_blank" />
 </a>
 </p>
 
