@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol AirtimeService: Sendable {
+protocol AirtimeService: Sendable {
     func sendAirtime(recipients: [Recipient]) async throws
 }
 
@@ -15,7 +15,7 @@ final class ATAirtimeService: AirtimeService {
     private let username: String
     private let apiKey: String
 
-    public init(username: String, apiKey: String) {
+    init(username: String, apiKey: String) {
         self.username = username
         self.apiKey = apiKey
     }

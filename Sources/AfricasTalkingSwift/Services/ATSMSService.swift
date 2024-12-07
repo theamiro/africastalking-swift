@@ -7,19 +7,21 @@
 
 import Foundation
 
-public protocol SMSService: Sendable {
+protocol SMSService: Sendable {
     func sendBulkSMS(message: SMS) async throws
     func sendPremiumSMS(message: SMS) async throws
 }
 
-public final class ATSMSService: SMSService {
+final class ATSMSService: SMSService {
     private let username: String
     private let apiKey: String
+
     init(username: String, apiKey: String) {
         self.apiKey = apiKey
         self.username = username
     }
-    public func sendBulkSMS(message: SMS) async throws {
+
+    func sendBulkSMS(message: SMS) async throws {
         guard let url = URL(string: "https://api.africastalking.com/version1/messaging/bulk") else {
             throw AFNetworkError.invalidURL
         }

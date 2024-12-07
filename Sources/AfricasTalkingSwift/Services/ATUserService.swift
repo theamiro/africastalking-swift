@@ -8,13 +8,14 @@
 import Foundation
 import Logging
 
-public protocol UserService: Sendable {
+protocol UserService: Sendable {
     func fetchUserData() async throws
 }
 
 final class ATUserService: UserService {
     private let username: String
     private let apiKey: String
+
     init(username: String, apiKey: String) {
         self.apiKey = apiKey
         self.username = username
