@@ -14,17 +14,16 @@ protocol AirtimeService: Sendable {
 final class ATAirtimeService: AirtimeService {
     private let username: String
     private let apiKey: String
+    private let environment: Environment
 
-    init(username: String, apiKey: String) {
+    init(username: String, apiKey: String, environment: Environment) {
         self.username = username
         self.apiKey = apiKey
+        self.environment = environment
     }
 
     func sendAirtime(recipients: [Recipient]) async throws {
-        guard let url = URL(string: "https://api.sandbox.africastalking.com/version1/airtime/send") else {
-            throw AFNetworkError.invalidURL
-        }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: environment.AIRTIME_URL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")

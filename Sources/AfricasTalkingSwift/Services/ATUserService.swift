@@ -15,16 +15,16 @@ protocol UserService: Sendable {
 final class ATUserService: UserService {
     private let username: String
     private let apiKey: String
-
-    init(username: String, apiKey: String) {
-        self.apiKey = apiKey
+    private let environment: Environment
+    
+    init(username: String, apiKey: String, environment: Environment) {
         self.username = username
+        self.apiKey = apiKey
+        self.environment = environment
     }
+
     func fetchUserData() async throws {
-        guard let url = URL(string: "https://api.africastalking.com/version1/user") else {
-            throw AFNetworkError.invalidURL
-        }
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        var components = URLComponents(url: environment.USER_URL, resolvingAgainstBaseURL: false)
         components?.queryItems = [URLQueryItem(name: "username", value: username)]
         guard let updatedURL = components?.url else {
             throw AFNetworkError.invalidURL

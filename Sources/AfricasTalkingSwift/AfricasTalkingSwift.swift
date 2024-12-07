@@ -6,10 +6,10 @@ final public class AfricasTalkingSwift: Sendable {
     private let atUserService: UserService
     private let atSMSService: SMSService
 
-    public init(username: String, apiKey: String) {
-        self.atAirtimeService = ATAirtimeService(username: username, apiKey: apiKey)
-        self.atUserService = ATUserService(username: username, apiKey: apiKey)
-        self.atSMSService = ATSMSService(username: username, apiKey: apiKey)
+    public init(username: String, apiKey: String, environment: Environment = .production) {
+        self.atAirtimeService = ATAirtimeService(username: username, apiKey: apiKey, environment: environment)
+        self.atUserService = ATUserService(username: username, apiKey: apiKey, environment: environment)
+        self.atSMSService = ATSMSService(username: username, apiKey: apiKey, environment: environment)
     }
 
     // SMS Service

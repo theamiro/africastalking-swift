@@ -6,6 +6,32 @@
 //
 import Foundation
 
-enum Environment {
-    static let BASE_URL = "https://api.africastalking.com"
+public enum Environment: Sendable {
+    case sandbox
+    case production
+
+    private var baseURL: String {
+        switch self {
+            case .sandbox:
+                return "https://api.sandbox.africastalking.com/version1"
+            case .production:
+                return "https://api.africastalking.com/version1"
+        }
+    }
+
+    var AIRTIME_URL: URL {
+        URL(string: "\(baseURL)/airtime/send")!
+    }
+
+    var SMS_URL: URL {
+        URL(string: "\(baseURL)/messaging/bulk")!
+    }
+
+    var PREMIUM_SMS_URL: URL {
+        URL(string: "\(baseURL)/messaging")!
+    }
+
+    var USER_URL: URL {
+        URL(string: "\(baseURL)/user")!
+    }
 }

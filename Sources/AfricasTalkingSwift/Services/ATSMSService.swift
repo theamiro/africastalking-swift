@@ -15,17 +15,16 @@ protocol SMSService: Sendable {
 final class ATSMSService: SMSService {
     private let username: String
     private let apiKey: String
+    private let environment: Environment
 
-    init(username: String, apiKey: String) {
-        self.apiKey = apiKey
+    init(username: String, apiKey: String, environment: Environment) {
         self.username = username
+        self.apiKey = apiKey
+        self.environment = environment
     }
 
     func sendBulkSMS(message: SMS) async throws {
-        guard let url = URL(string: "https://api.africastalking.com/version1/messaging/bulk") else {
-            throw AFNetworkError.invalidURL
-        }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: environment.SMS_URL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -60,10 +59,7 @@ final class ATSMSService: SMSService {
     }
     
     public func sendPremiumSMS(message: SMS) async throws {
-        guard let url = URL(string: "https://api.africastalking.com/version1/messaging") else {
-            throw AFNetworkError.invalidURL
-        }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: environment.PREMIUM_SMS_URL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
