@@ -2,15 +2,13 @@
 // https://docs.swift.org/swift-book
 
 final public class AfricasTalkingSwift {
-    @MainActor public static let shared = AfricasTalkingSwift()
     public var atAirtimeService: AirtimeService
     public var atUserService: UserService
     public var atSMSService: SMSService
 
-    private init(atAirtimeService: AirtimeService = ATAirtimeService(username: "username"),
-                 atUserService: UserService = ATUserService(), atSMSService: SMSService = ATSMSService()) {
-        self.atAirtimeService = atAirtimeService
-        self.atUserService = atUserService
-        self.atSMSService = atSMSService
+    public init(username: String, apiKey: String) {
+        self.atAirtimeService = ATAirtimeService(username: username, apiKey: apiKey)
+        self.atUserService = ATUserService(username: username, apiKey: apiKey)
+        self.atSMSService = ATSMSService(username: username, apiKey: apiKey)
     }
 }

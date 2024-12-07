@@ -13,13 +13,18 @@ public protocol UserService {
 }
 
 class ATUserService: UserService {
-    init() { }
+    private var username: String
+    private var apiKey: String
+    init(username: String, apiKey: String) {
+        self.apiKey = apiKey
+        self.username = username
+    }
     func getUserData() async throws {
         guard let url = URL(string: "https://api.africastalking.com/version1/user") else {
             throw AFNetworkError.invalidURL
         }
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components?.queryItems = [URLQueryItem(name: "username", value: "username")]
+        components?.queryItems = [URLQueryItem(name: "username", value: username)]
         guard let updatedURL = components?.url else {
             throw AFNetworkError.invalidURL
         }
@@ -27,7 +32,7 @@ class ATUserService: UserService {
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("token", forHTTPHeaderField: "apiKey")
+        request.setValue(apiKey, forHTTPHeaderField: "apiKey")
 
         log.info("\(request.curlString)")
         let (data, response) = try await URLSession.shared.data(for: request)

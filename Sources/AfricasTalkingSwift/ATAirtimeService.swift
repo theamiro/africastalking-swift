@@ -30,9 +30,11 @@ public protocol AirtimeService {
 
 final class ATAirtimeService: AirtimeService {
     var username: String
+    var apiKey: String
 
-    public init(username: String) {
+    public init(username: String, apiKey: String) {
         self.username = username
+        self.apiKey = apiKey
     }
 
     func sendAirtime(recipients: [Recipient]) async throws {
@@ -43,12 +45,12 @@ final class ATAirtimeService: AirtimeService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("token", forHTTPHeaderField: "apiKey")
+        request.setValue(apiKey, forHTTPHeaderField: "apiKey")
 
         let bodyParameters = [
             "recipients": "[{\"phoneNumber\":\"+2547706664400\",\"amount\":\"KES 5.00\"}]",
             "maxNumRetry": "1",
-            "username": "username",
+            "username": username,
         ]
         let bodyString = bodyParameters.queryParameters
         request.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)

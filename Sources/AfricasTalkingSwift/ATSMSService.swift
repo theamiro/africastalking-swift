@@ -25,6 +25,12 @@ public struct SMS: Encodable, Sendable {
 }
 
 public final class ATSMSService: SMSService {
+    private var username: String
+    private var apiKey: String
+    init(username: String, apiKey: String) {
+        self.apiKey = apiKey
+        self.username = username
+    }
     public func sendBulkSMS(message: SMS) async throws {
         guard let url = URL(string: "https://api.africastalking.com/version1/messaging/bulk") else {
             throw AFNetworkError.invalidURL
@@ -33,7 +39,7 @@ public final class ATSMSService: SMSService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("token", forHTTPHeaderField: "apiKey")
+        request.setValue(apiKey, forHTTPHeaderField: "apiKey")
         do {
             let body = try JSONEncoder().encode(message)
             request.httpBody = body
@@ -71,10 +77,10 @@ public final class ATSMSService: SMSService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("token", forHTTPHeaderField: "apiKey")
+        request.setValue(apiKey, forHTTPHeaderField: "apiKey")
 
         let parameters: [String: String] = [
-            "username": "username",
+            "username": username,
             "to": message.phoneNumbers.joined(separator: ","),
             "message": message.message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? message.message,
             "from": "username"
