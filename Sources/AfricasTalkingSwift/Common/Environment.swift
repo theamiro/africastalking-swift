@@ -35,3 +35,7 @@ public enum Environment: Sendable {
         URL(string: "\(baseURL)/user")!
     }
 }
+
+enum Constants {
+    static let sandboxUsername = "sandbox"
+}

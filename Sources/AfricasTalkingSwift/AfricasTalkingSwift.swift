@@ -7,9 +7,15 @@ final public class AfricasTalkingSwift: Sendable {
     private let atSMSService: SMSService
 
     public init(username: String, apiKey: String, environment: Environment = .production) {
-        self.atAirtimeService = ATAirtimeService(username: username, apiKey: apiKey, environment: environment)
-        self.atUserService = ATUserService(username: username, apiKey: apiKey, environment: environment)
-        self.atSMSService = ATSMSService(username: username, apiKey: apiKey, environment: environment)
+        self.atAirtimeService = ATAirtimeService(username: environment == .sandbox ? Constants.sandboxUsername : username,
+                                                 apiKey: apiKey,
+                                                 environment: environment)
+        self.atUserService = ATUserService(username: environment == .sandbox ? Constants.sandboxUsername : username,
+                                           apiKey: apiKey,
+                                           environment: environment)
+        self.atSMSService = ATSMSService(username: environment == .sandbox ? Constants.sandboxUsername : username,
+                                         apiKey: apiKey,
+                                         environment: environment)
     }
 
     // SMS Service
