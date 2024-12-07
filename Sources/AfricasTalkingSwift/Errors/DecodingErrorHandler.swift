@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 func handleDecodingError(_ error: DecodingError) {
     switch error {
         case .typeMismatch(let type, let context):
