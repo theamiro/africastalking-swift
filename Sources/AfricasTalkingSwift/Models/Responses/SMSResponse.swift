@@ -7,22 +7,22 @@
 
 import Foundation
 
-struct SMSResponse: Decodable, Sendable {
-    let SMSMessageData: MessageData
-    struct MessageData: Decodable {
-        let Message: String
-        let Recipients: [SMSRecipient]
+public struct SMSResponse: Decodable, Sendable {
+    public let SMSMessageData: MessageData
+    public struct MessageData: Decodable, Sendable {
+        public let Message: String
+        public let Recipients: [SMSRecipient]
     }
-    struct SMSRecipient: Decodable {
-        let statusCode: SMSStatusCode
-        let number: String
-        let status: String
-        let cost: String
-        let messageId: String
+    public struct SMSRecipient: Decodable, Sendable {
+        public let statusCode: SMSStatusCode
+        public let number: String
+        public let status: String
+        public let cost: String
+        public let messageId: String
     }
 }
 
-enum SMSStatusCode: Int, Decodable {
+public enum SMSStatusCode: Int, Decodable, Sendable {
     case processed = 100
     case sent = 101
     case queued = 102

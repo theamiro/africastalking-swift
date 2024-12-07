@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct AirtimeResponse: Decodable, Sendable {
-    let errorMessage: String
-    let numSent: Int
-    let totalAmount: String
-    let totalDiscount: String
-    let responses: [RecipientResponse]
+public struct AirtimeResponse: Decodable, Sendable {
+    public let errorMessage: String
+    public let numSent: Int
+    public let totalAmount: String
+    public let totalDiscount: String
+    public let responses: [RecipientResponse]
 }
 
-struct RecipientResponse: Decodable, Sendable {
-    let phoneNumber: String
-    let errorMessage: String
-    let amount: String
-    let status: String
-    let requestId: String
-    let discount: String
+public struct RecipientResponse: Decodable, Sendable {
+    public let phoneNumber: String
+    public let errorMessage: String
+    public let amount: String
+    public let status: String
+    public let requestId: String
+    public let discount: String
 }

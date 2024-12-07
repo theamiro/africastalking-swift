@@ -8,8 +8,8 @@
 import Foundation
 
 protocol SMSService: Sendable {
-    func sendBulkSMS(message: SMS) async throws
-    func sendPremiumSMS(message: SMS) async throws
+    func sendBulkSMS(message: SMS) async throws -> SMSResponse
+    func sendPremiumSMS(message: SMS) async throws -> SMSResponse
 }
 
 final class ATSMSService: SMSService {
@@ -25,31 +25,28 @@ final class ATSMSService: SMSService {
         self.networkClient = networkClient
     }
 
-    func sendBulkSMS(message: SMS) async throws {
+    func sendBulkSMS(message: SMS) async throws -> SMSResponse {
         var messageRequest = message
         messageRequest.username = username
         let body = try JSONEncoder().encode(messageRequest)
-        let response = try await networkClient.request(url: environment.SMS_URL,
-                                                       method: .POST,
-                                                       body: body,
-                                                       task: .jsonEncoded,
-                                                       type: SMSResponse.self)
-        log.info("\(response)")
+        return try await networkClient.request(url: environment.SMS_URL,
+                                               method: .POST,
+                                               body: body,
+                                               task: .jsonEncoded,
+                                               type: SMSResponse.self)
     }
-    
-    public func sendPremiumSMS(message: SMS) async throws {
+
+    public func sendPremiumSMS(message: SMS) async throws -> SMSResponse {
         let body = [
             "username": username,
             "to": message.phoneNumbers.joined(separator: ","),
             "message": message.message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? message.message,
             "from": "username"
         ].map { "\($0.key)=\($0.value)" }.joined(separator: "&").data(using: .utf8)
-
-        let response = try await networkClient.request(url: environment.PREMIUM_SMS_URL,
-                                                       method: .POST,
-                                                       body: body,
-                                                       task: .urlFormEncoded,
-                                                       type: SMSResponse.self)
-        log.info("\(response)")
+        return try await networkClient.request(url: environment.PREMIUM_SMS_URL,
+                                               method: .POST,
+                                               body: body,
+                                               task: .urlFormEncoded,
+                                               type: SMSResponse.self)
     }
 }

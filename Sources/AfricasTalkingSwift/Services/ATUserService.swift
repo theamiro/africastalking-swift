@@ -9,7 +9,7 @@ import Foundation
 import Logging
 
 protocol UserService: Sendable {
-    func fetchUserData() async throws
+    func fetchUserData() async throws -> UserResponse
 }
 
 final class ATUserService: UserService {
@@ -25,11 +25,10 @@ final class ATUserService: UserService {
         self.networkClient = networkClient
     }
 
-    func fetchUserData() async throws {
+    func fetchUserData() async throws -> UserResponse {
         let parameters = [URLQueryItem(name: "username", value: username)]
-        let response = try await networkClient.request(url: environment.USER_URL,
-                                                       task: .queryParameters(parameters),
-                                                       type: UserResponse.self)
-        log.info("\(response)")
+        return try await networkClient.request(url: environment.USER_URL,
+                                               task: .queryParameters(parameters),
+                                               type: UserResponse.self)
     }
 }

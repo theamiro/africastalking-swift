@@ -61,11 +61,14 @@ final class NetworkClient: Sendable {
                 log.error("\(errorResponse)")
                 throw AFNetworkError.custom(errorResponse)
             } else {
+                log.error("An error occurred")
                 throw AFNetworkError.custom("An error occurred")
             }
         }
         do {
-            return try JSONDecoder().decode(T.self, from: data)
+            let decodedData = try JSONDecoder().decode(T.self, from: data)
+            log.info("\(decodedData)")
+            return decodedData
         } catch {
             if let decodingError = error as? DecodingError {
                 handleDecodingError(decodingError)

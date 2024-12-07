@@ -23,37 +23,21 @@ final public class AfricasTalkingSwift: Sendable {
     }
 
     // SMS Service
-    public func sendBulkSMS(message: SMS) async {
-        do {
-            try await atSMSService.sendBulkSMS(message: message)
-        } catch {
-            log.error("\(error.localizedDescription)")
-        }
+    public func sendBulkSMS(message: SMS) async throws -> SMSResponse {
+        try await atSMSService.sendBulkSMS(message: message)
     }
 
-    public func sendPremiumSMS(message: SMS) async {
-        do {
-            try await atSMSService.sendPremiumSMS(message: message)
-        } catch {
-            log.error("\(error.localizedDescription)")
-        }
+    public func sendPremiumSMS(message: SMS) async throws -> SMSResponse {
+        try await atSMSService.sendPremiumSMS(message: message)
     }
 
     // USER
-    public func fetchUserData() async {
-        do {
-            try await atUserService.fetchUserData()
-        } catch {
-            log.error("\(error.localizedDescription)")
-        }
+    public func fetchUserData() async throws -> UserResponse {
+        try await atUserService.fetchUserData()
     }
 
     // AIRTIME
-    public func sendAirtime(recipients: [Recipient]) async {
-        do {
-            try await atAirtimeService.sendAirtime(recipients: recipients)
-        } catch {
-            log.error("\(error.localizedDescription)")
-        }
+    public func sendAirtime(recipients: [Recipient]) async throws -> AirtimeResponse {
+        try await atAirtimeService.sendAirtime(recipients: recipients)
     }
 }
