@@ -8,18 +8,18 @@
 import Foundation
 import Logging
 
-public protocol UserService {
-    func getUserData() async throws
+public protocol UserService: Sendable {
+    func fetchUserData() async throws
 }
 
-class ATUserService: UserService {
-    private var username: String
-    private var apiKey: String
+final class ATUserService: UserService {
+    private let username: String
+    private let apiKey: String
     init(username: String, apiKey: String) {
         self.apiKey = apiKey
         self.username = username
     }
-    func getUserData() async throws {
+    func fetchUserData() async throws {
         guard let url = URL(string: "https://api.africastalking.com/version1/user") else {
             throw AFNetworkError.invalidURL
         }

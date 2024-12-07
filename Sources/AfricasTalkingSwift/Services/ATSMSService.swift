@@ -7,14 +7,14 @@
 
 import Foundation
 
-public protocol SMSService {
+public protocol SMSService: Sendable {
     func sendBulkSMS(message: SMS) async throws
     func sendPremiumSMS(message: SMS) async throws
 }
 
 public final class ATSMSService: SMSService {
-    private var username: String
-    private var apiKey: String
+    private let username: String
+    private let apiKey: String
     init(username: String, apiKey: String) {
         self.apiKey = apiKey
         self.username = username
