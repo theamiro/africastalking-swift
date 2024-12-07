@@ -15,47 +15,27 @@ final class ATAirtimeService: AirtimeService {
     private let username: String
     private let apiKey: String
     private let environment: Environment
+    
+    private let networkClient: NetworkClient
 
-    init(username: String, apiKey: String, environment: Environment) {
+    init(networkClient: NetworkClient,
+         username: String,
+         apiKey: String,
+         environment: Environment) {
         self.username = username
         self.apiKey = apiKey
         self.environment = environment
+        self.networkClient = networkClient
     }
 
     func sendAirtime(recipients: [Recipient]) async throws {
-        var request = URLRequest(url: environment.AIRTIME_URL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "apiKey")
-
         let bodyParameters = [
             "recipients": "[{\"phoneNumber\":\"+2547706664400\",\"amount\":\"KES 5.00\"}]",
             "maxNumRetry": "1",
             "username": username,
         ]
-        let bodyString = bodyParameters.queryParameters
-        request.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
-        log.info("\(request.curlString)")
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-            if let errorResponse = String(data: data, encoding: .utf8) {
-                log.error("\(errorResponse)")
-                return
-            } else {
-                return
-            }
-        }
-        log.info("\(String(describing: String(data: data, encoding: .utf8)))")
-        do {
-            let airtimeResponse = try JSONDecoder().decode(AirtimeResponse.self, from: data)
-            log.info("\(airtimeResponse)")
-        } catch {
-            if let decodingError = error as? DecodingError {
-                handleDecodingError(decodingError)
-            } else {
-                throw error
-            }
-        }
+        let body = bodyParameters.queryParameters.data(using: .utf8, allowLossyConversion: true)
+        let response = try await networkClient.request(url: environment.AIRTIME_URL, method: .POST, body: body, type: AirtimeResponse.self)
+        log.info("\(response)")
     }
 }

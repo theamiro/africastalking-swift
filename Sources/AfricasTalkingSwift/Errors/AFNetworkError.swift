@@ -11,4 +11,5 @@ enum AFNetworkError: LocalizedError {
     case invalidURL
     case invalidResponseCode
     case encodingError
+    case custom(_ message: String)
 }

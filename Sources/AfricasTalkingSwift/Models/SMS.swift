@@ -8,7 +8,7 @@
 import Foundation
 
 public struct SMS: Encodable, Sendable {
-    public let username: String = "username"
+    public var username: String?
     public let message: String
     public let senderId: String = ""
     public let phoneNumbers: [String]
