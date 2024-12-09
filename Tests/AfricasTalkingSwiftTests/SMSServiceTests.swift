@@ -27,7 +27,7 @@ final class SMSServiceTests: XCTestCase {
         do {
             let response = try await sut.sendBulkSMS(message: message)
             XCTAssertEqual(response.SMSMessageData.Recipients.count, 1)
-            XCTAssertEqual(response.SMSMessageData.Recipients.first?.statusCode, .processed)
+            XCTAssertEqual(response.SMSMessageData.Recipients.first?.statusCode, .sent)
         } catch {
             XCTFail("Send airtime request failing")
             log.error("\(error.localizedDescription)")
