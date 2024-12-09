@@ -1,0 +1,14 @@
+{
+    "errorMessage": "None",
+    "numSent": 1,
+    "totalAmount": "KES 1000.0000",
+    "totalDiscount": "KES 40.0000",
+    "responses": [{
+        "phoneNumber": "+254711XXXYYY",
+        "errorMessage": "None",
+        "amount": "KES 1000.0000",
+        "status": "Sent",
+        "requestId": "ATQid_1be914ac47845eef1a1dab5d89ec50ff",
+        "discount": "KES 40.0000"
+    }]
+}

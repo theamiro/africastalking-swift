@@ -8,7 +8,7 @@
 import Foundation
 
 protocol AirtimeService: Sendable {
-    func sendAirtime(recipients: [Recipient]) async throws -> AirtimeResponse
+    @Sendable func sendAirtime(recipients: [Recipient]) async throws -> AirtimeResponse
 }
 
 final class ATAirtimeService: AirtimeService {
@@ -31,6 +31,10 @@ final class ATAirtimeService: AirtimeService {
             "username": username,
         ]
         let body = bodyParameters.queryParameters.data(using: .utf8, allowLossyConversion: true)
-        return try await networkClient.request(url: environment.AIRTIME_URL, method: .POST, body: body, type: AirtimeResponse.self)
+        return try await networkClient.request(url: environment.AIRTIME_URL,
+                                               method: .POST,
+                                               body: body,
+                                               sampleData: generateSampleResponses("airtimeResponse"),
+                                               type: AirtimeResponse.self)
     }
 }

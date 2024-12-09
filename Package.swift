@@ -18,9 +18,15 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.6.2")
     ],
     targets: [
-        .target(name: "AfricasTalkingSwift", dependencies: [
-            .product(name: "Logging", package: "swift-log")
-        ]),
+        .target(
+            name: "AfricasTalkingSwift",
+            dependencies: [
+                .product(name: "Logging", package: "swift-log")
+            ],
+            resources: [
+                .process("Resources")
+            ]
+        ),
         .testTarget(
             name: "AfricasTalkingSwiftTests",
             dependencies: ["AfricasTalkingSwift"]

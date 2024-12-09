@@ -15,16 +15,24 @@ enum HTTPMethod: String {
     case DELETE
 }
 
+enum StubClosure {
+    case never
+    case immediatelyStub
+}
+
 final class NetworkClient: Sendable {
     private let apiKey: String
+    private let stubClosure: StubClosure
 
-    init(apiKey: String) {
+    init(apiKey: String, stubClosure: StubClosure = .never) {
         self.apiKey = apiKey
+        self.stubClosure = stubClosure
     }
 
     func request<T>(url: URL,
                     method: HTTPMethod = .GET,
                     body: Data? = nil,
+                    sampleData: Data = Data(),
                     task: NetworkTask = .urlFormEncoded,
                     type: T.Type) async throws -> T where T: Decodable {
         var request = URLRequest(url: url)
@@ -55,18 +63,27 @@ final class NetworkClient: Sendable {
 
         log.info("\(request.curlString)")
 
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-            if let errorResponse = String(data: data, encoding: .utf8) {
-                log.error("\(errorResponse)")
-                throw AFNetworkError.custom(errorResponse)
-            } else {
-                log.error("An error occurred")
-                throw AFNetworkError.custom("An error occurred")
-            }
+        var responseData: Data
+        switch stubClosure {
+            case .never:
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    if let errorResponse = String(data: data, encoding: .utf8) {
+                        log.error("\(errorResponse)")
+                        throw AFNetworkError.custom(errorResponse)
+                    } else {
+                        log.error("An error occurred")
+                        throw AFNetworkError.custom("An error occurred")
+                    }
+                }
+                responseData = data
+            case .immediatelyStub:
+                responseData = sampleData
+                log.info("\(String(data: sampleData, encoding: .utf8))")
+                log.info("\(String(data: responseData, encoding: .utf8))")
         }
         do {
-            let decodedData = try JSONDecoder().decode(T.self, from: data)
+            let decodedData = try JSONDecoder().decode(T.self, from: responseData)
             log.info("\(decodedData)")
             return decodedData
         } catch {

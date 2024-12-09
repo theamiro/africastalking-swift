@@ -32,6 +32,7 @@ final class ATSMSService: SMSService {
         return try await networkClient.request(url: environment.SMS_URL,
                                                method: .POST,
                                                body: body,
+                                               sampleData: generateSampleResponses("smsResponse"),
                                                task: .jsonEncoded,
                                                type: SMSResponse.self)
     }
@@ -46,6 +47,7 @@ final class ATSMSService: SMSService {
         return try await networkClient.request(url: environment.PREMIUM_SMS_URL,
                                                method: .POST,
                                                body: body,
+                                               sampleData: generateSampleResponses("smsResponse"),
                                                task: .urlFormEncoded,
                                                type: SMSResponse.self)
     }
