@@ -25,5 +25,6 @@ let package = Package(
             name: "AfricasTalkingSwiftTests",
             dependencies: ["AfricasTalkingSwift"]
         ),
-    ]
+    ],
+    swiftLanguageVersions: [.version("6"), .v5]
 )
