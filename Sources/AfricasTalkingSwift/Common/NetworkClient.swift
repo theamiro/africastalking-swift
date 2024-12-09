@@ -79,8 +79,6 @@ final class NetworkClient: Sendable {
                 responseData = data
             case .immediatelyStub:
                 responseData = sampleData
-                log.info("\(String(data: sampleData, encoding: .utf8))")
-                log.info("\(String(data: responseData, encoding: .utf8))")
         }
         do {
             let decodedData = try JSONDecoder().decode(T.self, from: responseData)
