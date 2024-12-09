@@ -7,7 +7,7 @@
 </a>
 </p>
 
-> This SDK provides convenient access to the Africa's Talking API for applications written in Swift
+This SDK provides convenient access to the Africa's Talking API for applications written in Swift supporting async/await and Swift 6 
 
 ## Documentation
 
